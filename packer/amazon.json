@@ -1,0 +1,56 @@
+{
+  "builders": [
+  {
+    "ami_description": "{{user `ami-description`}}",
+    "ami_name": "{{user `ami-name`}}",
+    "ami_regions": [
+      "us-east-1"
+    ],
+    "ami_users": [
+      "XXXXXXXXXX"
+    ],
+    "ena_support": "true",
+    "instance_type": "t2.medium",
+    "region": "us-east-1",
+    "source_ami_filter": {
+      "filters": {
+        "name": "amzn2-ami-hvm-2.0*x86_64*",
+        "root-device-type": "ebs",
+        "virtualization-type": "hvm"
+      },
+      "most_recent": true,
+      "owners": [
+        "amazon"
+      ]
+    },
+    "sriov_support": "true",
+    "ssh_username": "ec2-user",
+    "tags": {
+      "Name": "{{user `ami-name`}}"
+    },
+    "type": "amazon-ebs"
+  }
+],
+"post-processors": [
+  {
+    "inline": [
+      "echo AMI Name {{user `ami-name`}}",
+      "date",
+      "exit 0"
+    ],
+    "type": "shell-local"
+  }
+],
+"provisioners": [
+  {
+    "script": "install_amazon.bash",
+    "type": "shell"
+  }
+],
+  "variables": {
+    "ami-description": "Amazon Linux for Jenkins Master and Slave ({{isotime \"2006-01-02-15-04-05\"}})",
+    "ami-name": "amazon-linux-for-jenkins-{{isotime \"2006-01-02-15-04-05\"}}",
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  }
+}
