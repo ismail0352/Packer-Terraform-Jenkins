@@ -89,7 +89,7 @@ function slave_setup()
   <scope>GLOBAL</scope>
   <id>$CRED_ID</id>
   <description>Generated via Terraform for $SLAVE_IP</description>
-  <username>ec2-user</username>
+  <username>$USERID</username>
   <privateKeySource class="com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey\$DirectEntryPrivateKeySource">
     <privateKey>${worker_pem}</privateKey>
   </privateKeySource>
