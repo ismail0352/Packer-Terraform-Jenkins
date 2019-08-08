@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "VisualEditor0",
+          "Effect": "Allow",
+          "Action": [
+              "iam:CreateInstanceProfile",
+              "iam:PassRole",
+              "iam:Get*",
+              "ec2:ImportKeyPair",
+              "ec2:CreateKeyPair",
+              "iam:CreateRole",
+              "iam:CreateServiceLinkedRole",
+              "ec2:DescribeKeyPairs",
+              "autoscaling:*",
+              "ec2:DeleteKeyPair",
+              "iam:AddRoleToInstanceProfile",
+              "ec2:*SecurityGroup*",
+              "rds:StartDBCluster",
+              "rds:CreateDBSubnetGroup",
+              "rds:AddRoleToDBInstance",
+              "rds:CreateDBInstance",
+              "rds:DownloadDBLogFilePortion",
+              "rds:DescribeDBInstances",
+              "rds:AddRoleToDBCluster",
+              "rds:ModifyDBInstance",
+              "ec2:DescribeKeyPairs",
+              "rds:DeleteDBCluster",
+              "rds:DeleteDBInstance",
+              "rds:AddTagsToResource",
+              "rds:CreateDBClusterEndpoint",
+              "rds:StopDBCluster",
+              "rds:DeleteDBSnapshot",
+              "rds:StopDBInstance",
+              "rds:StartDBInstance",
+              "rds:DeleteDBSubnetGroup",
+              "rds:ListTagsForResource",
+              "rds:CreateDBSecurityGroup",
+              "rds:DeleteDBSecurityGroup",
+              "rds:DescribeDBClusterSnapshots",
+              "rds:DownloadCompleteDBLogFile",
+              "rds:RemoveTagsFromResource"
+          ],
+          "Resource": "*"
+      }
+  ]
+}

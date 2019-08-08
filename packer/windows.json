@@ -1,48 +1,48 @@
 {
-"variables": {
-  "ami-description": "Windows Server for Jenkins Slave ({{isotime \"2006-01-02-15-04-05\"}})",
-  "ami-name": "windows-slave-for-jenkins-{{isotime \"2006-01-02-15-04-05\"}}",
-  "aws_access_key": "",
-  "aws_secret_key": ""
-},
+  "variables": {
+    "ami-description": "Windows Server for Jenkins Slave ({{isotime \"2006-01-02-15-04-05\"}})",
+    "ami-name": "windows-slave-for-jenkins-{{isotime \"2006-01-02-15-04-05\"}}",
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
 
-"builders": [
-  {
-    "ami_description": "{{user `ami-description`}}",
-    "ami_name": "{{user `ami-name`}}",
-    "ami_regions": [
-      "us-east-1"
-    ],
-    "ami_users": [
-      "XXXXXXXXXX"
-    ],
-    "ena_support": "true",
-    "instance_type": "t3.medium",
-    "region": "us-east-1",
-    "source_ami_filter": {
-      "filters": {
-        "name": "Windows_Server-2016-English-Full-Containers-*",
-        "root-device-type": "ebs",
-        "virtualization-type": "hvm"
+  "builders": [
+    {
+      "ami_description": "{{user `ami-description`}}",
+      "ami_name": "{{user `ami-name`}}",
+      "ami_regions": [
+        "us-east-1"
+      ],
+      "ami_users": [
+        "XXXXXXXXXX"
+      ],
+      "ena_support": "true",
+      "instance_type": "t3.medium",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "name": "Windows_Server-2016-English-Full-Containers-*",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": [
+          "amazon"
+        ]
       },
-      "most_recent": true,
-      "owners": [
-        "amazon"
-      ]
-    },
-    "sriov_support": "true",
-    "user_data_file": "scripts/SetUpWinRM.ps1",
-    "communicator": "winrm",
-    "winrm_username": "Administrator",
-    "winrm_insecure": true,
-    "winrm_use_ssl": true,
-    "tags": {
-      "Name": "{{user `ami-name`}}"
-    },
-    "type": "amazon-ebs"
-  }
-],
-"post-processors": [
+      "sriov_support": "true",
+      "user_data_file": "scripts/SetUpWinRM.ps1",
+      "communicator": "winrm",
+      "winrm_username": "Administrator",
+      "winrm_insecure": true,
+      "winrm_use_ssl": true,
+      "tags": {
+        "Name": "{{user `ami-name`}}"
+      },
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [
   {
     "inline": [
       "echo AMI Name {{user `ami-name`}}",
@@ -51,27 +51,27 @@
     ],
     "type": "shell-local"
   }
-],
-"provisioners": [
-  {
-    "type": "powershell",
-    "valid_exit_codes": [ 0, 3010 ],
-    "scripts": [
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "valid_exit_codes": [ 0, 3010 ],
+      "scripts": [
         "scripts/disable-uac.ps1",
         "scripts/enable-rdp.ps1",
         "install_windows.ps1"
-    ]
-  },
-  {
-    "type": "windows-restart",
-    "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
-  },
-  {
-    "type": "powershell",
-    "inline": [
-      "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeInstance.ps1 -Schedule",
-      "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\SysprepInstance.ps1 -NoShutdown"
-    ]
-  }
-]
+      ]
+    },
+    {
+      "type": "windows-restart",
+      "restart_check_command": "powershell -command \"& {Write-Output 'restarted.'}\""
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeInstance.ps1 -Schedule",
+        "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\SysprepInstance.ps1 -NoShutdown"
+      ]
+    }
+  ]
 }
