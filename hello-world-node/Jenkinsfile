@@ -1,10 +1,10 @@
-node (label: 'build && linux && adminpanel') {
+node (label: 'build && linux') {
   stage('Clean Workspace'){
         cleanWs()
   }
   
   stage("Main build") {
-    docker.image('node:10  ').pull()
+    docker.image('node:10').pull()
     // To add support for ng serve from within container - add `.withRun('-p 4200:4200')` Also Image will be 
     // needed to be updated to run `ng serve`
     docker.image('node:10').inside {
@@ -15,20 +15,23 @@ node (label: 'build && linux && adminpanel') {
         sh label: 
         'Running npm install', 
          script: '''
+         cd hello-world-node
          node --version
          npm install
          ./node_modules/.bin/ng --version
          '''
       }
-      // stage('Test') {
-      //   sh label: 
-      //   'Running npm run test', 
-      //    script: '''
-      //    node --version
-      //    ./node_modules/.bin/ng --version
-      //    npm run test
-      //    '''
-      // }
+      stage('Test') {
+        sh label: 
+        'Running npm run test', 
+         script: '''
+         cd hello-world-node
+         node --version
+         ./node_modules/.bin/ng --version
+         export CHROME_BIN=/usr/bin/google-chrome
+         npm run test
+         '''
+      }
       // stage('e2e') {
       //   sh label: 
       //   'Running npm run e2e', 
@@ -38,15 +41,15 @@ node (label: 'build && linux && adminpanel') {
       //    npm run e2e
       //    '''
       // }
-      stage('build') {
-        sh label: 
-        'Running npm run build', 
-         script: '''
-         node --version
-         ./node_modules/.bin/ng --version
-         npm run build
-         '''
-      }
+      // stage('build') {
+      //   sh label: 
+      //   'Running npm run build', 
+      //    script: '''
+      //    node --version
+      //    ./node_modules/.bin/ng --version
+      //    npm run build
+      //    '''
+      // }
     }
   }
   
