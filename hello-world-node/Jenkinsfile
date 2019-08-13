@@ -12,14 +12,16 @@ node (label: 'build && linux') {
         checkout([$class: 'GitSCM', branches: [[name: 'hello-node']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
       }
       stage('Install') {
-        sh label: 
-        'Running npm install', 
-         script: '''
-         cd hello-world-node
-         node --version
-         npm install
-         ./node_modules/.bin/ng --version
-         '''
+        docker.image('node:7-alpine').inside {
+          sh label: 
+          'Running npm install', 
+          script: '''
+          cd hello-world-node
+          node --version
+          npm install
+          ./node_modules/.bin/ng --version
+          '''
+        }
       }
       stage('Test') {
         sh label: 
