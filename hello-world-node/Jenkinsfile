@@ -5,34 +5,47 @@ node (label: 'build && linux') {
   
   stage("Main build") {
     docker.image('node:10').pull()
+    docker.image('justinribeiro/chrome-headless').pull()
+    
     // To add support for ng serve from within container - add `.withRun('-p 4200:4200')` Also Image will be 
     // needed to be updated to run `ng serve`
-    docker.image('node:10').inside {
       stage('Checkout SCM') {
-        checkout([$class: 'GitSCM', branches: [[name: 'hello-node']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
-      }
-      stage('Install') {
-        docker.image('node:7-alpine').inside {
-          sh label: 
-          'Running npm install', 
-          script: '''
-          cd hello-world-node
-          node --version
-          npm install
-          ./node_modules/.bin/ng --version
-          '''
+        docker.image('node:10').inside {
+          checkout([$class: 'GitSCM', branches: [[name: 'hello-node']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
         }
       }
-      stage('Test') {
+      stage('Install') {
+        docker.image('node:10').inside {
         sh label: 
-        'Running npm run test', 
+        'Running npm install', 
          script: '''
          cd hello-world-node
          node --version
+         npm install
          ./node_modules/.bin/ng --version
-         export CHROME_BIN=/usr/bin/google-chrome
-         npm run test
          '''
+        }
+      }
+      stage('Get test dependency') {
+        sh label:
+        'Downloading chrome.json',
+        script: '''
+        cd hello-world-node
+        wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O $WORKSPACE/chrome.json
+        '''
+      }
+      stage('Test') {
+        docker.image('justinribeiro/chrome-headless').withRun("-p 9222:9222 --security-opt seccomp=$WORKSPACE/chrome.json") { 
+            sh label: 
+            'Running npm test', 
+            script: '''
+            cd hello-world-node
+            node --version
+            npm run test
+            ./node_modules/.bin/ng --version
+            '''
+          
+        }
       }
       // stage('e2e') {
       //   sh label: 
@@ -43,17 +56,7 @@ node (label: 'build && linux') {
       //    npm run e2e
       //    '''
       // }
-      // stage('build') {
-      //   sh label: 
-      //   'Running npm run build', 
-      //    script: '''
-      //    node --version
-      //    ./node_modules/.bin/ng --version
-      //    npm run build
-      //    '''
-      // }
     }
-  }
   
   // stage('DownStream Job') {
   //       build job: 'AdminPanelDeployPiepeline', quietPeriod: 0, parameters: [[$class: 'StringParameterValue', name: 'workspace', value: env.WORKSPACE]]
