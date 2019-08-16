@@ -1,4 +1,4 @@
-# Chrome_Node
+# Chrome-Node
 
 This Dockerfile can help you get started when running test for node based applications on chrome.
 
