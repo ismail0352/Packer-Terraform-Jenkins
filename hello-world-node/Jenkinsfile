@@ -17,6 +17,7 @@ node (label: 'build && linux') {
         sh label:
           'Running npm install',
         script: '''
+          cd hello-world-node
           npm install
         '''
       }
