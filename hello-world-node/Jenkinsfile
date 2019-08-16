@@ -1,7 +1,15 @@
 node (label: 'build && linux') {
+  stage('Clean Workspace'){
+    cleanWs()
+  }
+
   stage("Main build") {
     docker.image('node:10').pull()
     docker.image('ismail0352/chrome-node').pull()
+
+    stage('Checkout SCM') {
+      checkout([$class: 'GitSCM', branches: [[name: 'hello-node']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
+    }
     
     // Permorming Install and Lint
     docker.image('node:10').inside {
@@ -66,10 +74,6 @@ node (label: 'build && linux') {
     }
   }
   
-  stage('Clean Workspace'){
-    cleanWs()
-  }
-
   // stage('DownStream Job') {
   //       build job: 'AdminPanelDeployPiepeline', quietPeriod: 0, parameters: [[$class: 'StringParameterValue', name: 'workspace', value: env.WORKSPACE]]
   // }
