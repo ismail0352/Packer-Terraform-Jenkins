@@ -17,6 +17,7 @@ node (label: 'build && linux') {
         sh label:
           'Running npm install',
         script: '''
+          node --version
           cd hello-world-node
           npm install
         '''
@@ -26,6 +27,7 @@ node (label: 'build && linux') {
         sh label:
           'Running npm run lint',
         script: '''
+          cd hello-world-node
           npm run lint
           '''
       }
@@ -44,8 +46,9 @@ node (label: 'build && linux') {
         sh label:
           'Running npm run test',
         script: '''
-          npm run test
           node --version
+          cd hello-world-node
+          npm run test
           '''
       }
 
@@ -53,6 +56,7 @@ node (label: 'build && linux') {
         sh label:
           'Running npm run e2e',
         script: '''
+          cd hello-world-node
           npm run e2e
           '''
       }
@@ -62,6 +66,8 @@ node (label: 'build && linux') {
         sh label:
           'Running npm run build',
         script: '''
+          node --version
+          cd hello-world-node
           npm run build
           '''
       }
