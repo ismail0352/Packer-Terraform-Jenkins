@@ -122,8 +122,6 @@ EOF
 </slave>
 EOF
 
-  sleep 10
-  
   # Creating node using node.xml
   cat /tmp/node.xml | $jenkins_cmd create-node $NODE_NAME
 }
