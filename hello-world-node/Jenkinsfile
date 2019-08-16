@@ -12,6 +12,7 @@ node (label: 'build && linux') {
       stage('Checkout SCM') {
         docker.image('node:10').inside {
           checkout([$class: 'GitSCM', branches: [[name: 'hello-node']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
+          sh 'cat /proc/1/cgroup'
         }
       }
       stage('Install') {
@@ -19,6 +20,7 @@ node (label: 'build && linux') {
         sh label: 
         'Running npm install', 
          script: '''
+         cat /proc/1/cgroup
          cd hello-world-node
          node --version
          npm install
@@ -35,16 +37,17 @@ node (label: 'build && linux') {
         '''
       }
       stage('Test') {
-        docker.image('justinribeiro/chrome-headless').withRun("-p 9222:9222 --security-opt seccomp=$WORKSPACE/chrome.json") { 
+        docker.image('ismail0352/chrome-headless-with-node').withRun('--name chrome-node --security-opt seccomp=$WORKSPACE/chrome.json -w /opt/jenkins-slave/workspace/Hello-Node/hello-world-node -v /opt/jenkins-slave/workspace/Hello-Node/hello-world-node:/opt/jenkins-slave/workspace/Hello-Node/hello-world-node:rw,z', 'npm run test') { c ->
+         // docker.image('justinribeiro/chrome-headless').inside { 
             sh label: 
             'Running npm test', 
             script: '''
-            cd hello-world-node
+            cat /proc/1/cgroup
             node --version
-            npm run test
-            ./node_modules/.bin/ng --version
+            sleep 20
+            docker logs chrome-node
             '''
-          
+          //}
         }
       }
       // stage('e2e') {
