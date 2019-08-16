@@ -1,8 +1,4 @@
 node (label: 'build && linux') {
-  stage('Clean Workspace'){
-    cleanWs()
-  }
-  
   stage("Main build") {
     docker.image('node:10').pull()
     docker.image('ismail0352/chrome-node').pull()
@@ -70,6 +66,10 @@ node (label: 'build && linux') {
     }
   }
   
+  stage('Clean Workspace'){
+    cleanWs()
+  }
+
   // stage('DownStream Job') {
   //       build job: 'AdminPanelDeployPiepeline', quietPeriod: 0, parameters: [[$class: 'StringParameterValue', name: 'workspace', value: env.WORKSPACE]]
   // }
