@@ -21,18 +21,23 @@ pipeline {
       }
     }
     
-    stage('Build') {
+    stage('Nuget Restore') {
       steps {
         bat label: 'Nuget Restore', 
         script: '''
           nuget restore "hello-world-dotnet\\HelloWorld.sln"
           echo "Nuget Done Starting Msbuild *************"
-        '''
+        ''' 
+      }
+    }
+
+    stage('Build') {
+      steps {
         script {
           //def msbuild = tool name: 'msbuild_2017', type: 'hudson.plugins.msbuild.MsBuildInstallation'
           tool name: 'msbuild_2017', type: 'msbuild'
           bat "\"${tool 'msbuild_2017'}\"\\msbuild.exe hello-world-dotnet\\HelloWorld.sln /P:DeployOnBuild=True /p:AllowUntrustedCertificate=True /p:MSDeployServiceUrl=172.31.74.41 /P:DeployIISAppPath=\"Default Web Site/hello-world-dotnet\""
-        } 
+        }
       }
     }
 
