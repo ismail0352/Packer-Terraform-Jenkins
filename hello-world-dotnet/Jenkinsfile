@@ -1,7 +1,7 @@
 // Jenkinsfile.PublicOrchestrator
 
 pipeline {
-  agent { label "build && windows && Hurricane" }
+  agent { label "build && windows" }
   stages {
     stage('Clean Workspace'){
       steps {
@@ -14,7 +14,7 @@ pipeline {
         checkout([$class: 'GitSCM', 
         branches: [[name: '*/hello-dotnet']], 
         doGenerateSubmoduleConfigurations: false, 
-        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ConfigManagement']], 
+        extensions: [], 
         submoduleCfg: [], 
         userRemoteConfigs: [[credentialsId: '5a70cb58-0311-4553-b63e-7b9bb8a81f0d', url: 'https://github.com/ismail0352/Packer-Terraform-Jenkins.git']]])
 
@@ -25,12 +25,13 @@ pipeline {
       steps {
         bat label: 'Nuget Restore', 
         script: '''
+          cd hello-world-dotnet
           nuget restore "HelloWorld\\HelloWorld.sln"
           echo "Nuget Done Starting Msbuild *************"
         '''
         script {
           def msbuild = tool name: 'msbuild_2017', type: 'hudson.plugins.msbuild.MsBuildInstallation'
-          bat "\"${tool 'msbuild2019'}\"\\msbuild.exe HelloWorld\\HelloWorld.sln /P:DeployOnBuild=True /p:AllowUntrustedCertificate=True /p:MSDeployServiceUrl=172.31.74.41 /P:DeployIISAppPath=\"Default Web Site/HelloWorld\""
+          bat "\"${tool 'msbuild_2017'}\"\\msbuild.exe HelloWorld\\HelloWorld.sln /P:DeployOnBuild=True /p:AllowUntrustedCertificate=True /p:MSDeployServiceUrl=172.31.74.41 /P:DeployIISAppPath=\"Default Web Site/HelloWorld\""
         } 
       }
     }
@@ -39,7 +40,7 @@ pipeline {
     //   steps {
     //     bat label: 'MsDeploy',
     //     script {
-    //       "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="PickupHurricaneOptionB\obj\Debug\Package\PickupHurricaneOptionB.zip" -dest:auto,computerName="172.31.74.41",userName=administrator,password="pUsZv-?2@&=M8bXg7r8vK?r!Rv8j=WKi",authType=NTLM -allowUntrusted=true
+    //       "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="PickupHurricaneOptionB\obj\Debug\Package\PickupHurricaneOptionB.zip" -dest:auto,computerName="172.31.74.41",userName=administrator,password="supersecret",authType=NTLM -allowUntrusted=true
 
     //     } 
     //   }
