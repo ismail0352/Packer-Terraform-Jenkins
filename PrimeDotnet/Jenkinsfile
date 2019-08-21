@@ -46,7 +46,7 @@ pipeline {
         script {
           bat label: 'Unit Test using Dotnet CLI',
         script: '''
-          dotnet.exe test
+          dotnet.exe test .\PrimeDotnet\
         '''
         }
       }
