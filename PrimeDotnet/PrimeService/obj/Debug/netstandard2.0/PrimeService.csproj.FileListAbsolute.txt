@@ -1,0 +1,9 @@
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\bin\Debug\netstandard2.0\PrimeService.deps.json
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\bin\Debug\netstandard2.0\PrimeService.dll
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\bin\Debug\netstandard2.0\PrimeService.pdb
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.csprojAssemblyReference.cache
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.AssemblyInfoInputs.cache
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.AssemblyInfo.cs
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.dll
+C:\Users\Admin\Downloads\samples\core\getting-started\unit-testing-using-mstest\PrimeService\obj\Debug\netstandard2.0\PrimeService.pdb
