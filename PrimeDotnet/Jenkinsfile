@@ -56,7 +56,7 @@ pipeline {
     //   steps {
     //     bat label: 'MsDeploy',
     //     script {
-    //       "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="PickupHurricaneOptionB\obj\Debug\Package\PickupHurricaneOptionB.zip" -dest:auto,computerName="172.31.74.41",userName=administrator,password="supersecret",authType=NTLM -allowUntrusted=true
+    //       "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="PrimeDotnet\obj\Debug\Package\PrimeDotnet.zip" -dest:auto,computerName="<IP or Hostname>",userName=administrator,password="supersecret",authType=NTLM -allowUntrusted=true
 
     //     } 
     //   }

@@ -73,8 +73,4 @@ node (label: 'build && linux') {
       }
     }
   }
-  
-  // stage('DownStream Job') {
-  //       build job: 'AdminPanelDeployPiepeline', quietPeriod: 0, parameters: [[$class: 'StringParameterValue', name: 'workspace', value: env.WORKSPACE]]
-  // }
 }
