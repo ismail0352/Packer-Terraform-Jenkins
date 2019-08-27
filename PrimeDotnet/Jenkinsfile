@@ -1,5 +1,3 @@
-// Jenkinsfile.PublicOrchestrator
-
 pipeline {
   agent { label "build && windows" }
   stages {
@@ -36,7 +34,7 @@ pipeline {
         script {
           //def msbuild = tool name: 'msbuild_2017', type: 'hudson.plugins.msbuild.MsBuildInstallation'
           tool name: 'msbuild_2017', type: 'msbuild'
-          bat "\"${tool 'msbuild_2017'}\"\\msbuild.exe PrimeDotnet\\prime-dotnet.sln /P:DeployOnBuild=True /p:AllowUntrustedCertificate=True /p:MSDeployServiceUrl=172.31.74.41 /P:DeployIISAppPath=\"Default Web Site/PrimeDotnet\""
+          bat "\"${tool 'msbuild_2017'}\"\\msbuild.exe PrimeDotnet\\prime-dotnet.sln /P:DeployOnBuild=True /p:AllowUntrustedCertificate=True /p:MSDeployServiceUrl=<IP or Hostname of IIS server> /P:DeployIISAppPath=\"Default Web Site/PrimeDotnet\""
         }
       }
     }
@@ -52,15 +50,17 @@ pipeline {
       }
     }
 
-    // stage('Deploy') {
-    //   steps {
-    //     bat label: 'MsDeploy',
-    //     script {
-    //       "C:\Program Files (x86)\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="PrimeDotnet\obj\Debug\Package\PrimeDotnet.zip" -dest:auto,computerName="<IP or Hostname>",userName=administrator,password="supersecret",authType=NTLM -allowUntrusted=true
+    stage('Deploy') {
+      steps {
+        bat label: 'MsDeploy',
+        script: '''
+          // For Localhost
+          "C:\\Program Files (x86)\\IIS\\Microsoft Web Deploy V3\\msdeploy.exe" -verb:sync -source:package="PrimeDotnet\\bin\\Debug\\Package\\PrimeDotnet.zip" -dest:auto,computerName=localhost
 
-    //     } 
-    //   }
-    // }
-
+          // For Remote Server
+           "C:\\Program Files (x86)\\IIS\\Microsoft Web Deploy V3\\msdeploy.exe" -verb:sync -source:package="PrimeDotnet\\obj\\Debug\\Package\\PrimeDotnet.zip" -dest:auto,computerName="<IP or Hostname>",userName=administrator,password="supersecret",authType=NTLM -allowUntrusted=true
+        '''
+      }
+    }
   }
 }
