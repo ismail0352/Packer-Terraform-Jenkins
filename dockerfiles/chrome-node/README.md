@@ -11,6 +11,9 @@ It was created for the purpose of Performing `Karma` and `Protactor` test. But c
 
 ## Getting Started
 
+Download chrome.json
+`wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json`
+
 Just run `docker run -d ismail0352/chrome-node --security-opt seccomp=./chrome.json`.
 
 **Note**: Please rememeber to provide `--security-opt seccomp=./chrome.json`, without this your test will fail.
@@ -39,7 +42,3 @@ docker.image('ismail0352/chrome-node').inside('--name chrome-node --security-opt
   }
 }
 ```
-
-## Authors
-
-* **Ismail** - *Initial work* for [Velotio](https://velotio.com/)
